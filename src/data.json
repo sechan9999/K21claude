@@ -1,0 +1,441 @@
+{
+  "candidates": [
+    {
+      "name": "이재명",
+      "party": "더불어민주당",
+      "votes": 17287513,
+      "percentage": 49.42
+    },
+    {
+      "name": "김문수",
+      "party": "국민의힘",
+      "votes": 14395639,
+      "percentage": 41.15
+    },
+    {
+      "name": "이준석",
+      "party": "개혁신당",
+      "votes": 2917523,
+      "percentage": 8.34
+    },
+    {
+      "name": "권영국",
+      "party": "민주노동당",
+      "votes": 344150,
+      "percentage": 0.98
+    },
+    {
+      "name": "송진호",
+      "party": "무소속",
+      "votes": 35791,
+      "percentage": 0.1
+    }
+  ],
+  "regions": [
+    {
+      "name": "경기",
+      "fullName": "경기도",
+      "lee": 4821148,
+      "kim": 3504620,
+      "jun": 816435,
+      "kwon": 84074,
+      "song": 8356,
+      "voters": 11715343,
+      "voted": 9297448,
+      "invalid": 62815,
+      "turnout": 79.36
+    },
+    {
+      "name": "전라남",
+      "fullName": "전라남도",
+      "lee": 1111941,
+      "kim": 110624,
+      "jun": 60822,
+      "kwon": 9352,
+      "song": 2104,
+      "voters": 1559431,
+      "voted": 1303365,
+      "invalid": 8522,
+      "turnout": 83.58
+    },
+    {
+      "name": "전북",
+      "fullName": "전북특별자치도",
+      "lee": 1023272,
+      "kim": 134996,
+      "jun": 67961,
+      "kwon": 10061,
+      "song": 1719,
+      "voters": 1510908,
+      "voted": 1246099,
+      "invalid": 8090,
+      "turnout": 82.47
+    },
+    {
+      "name": "광주",
+      "fullName": "광주광역시",
+      "lee": 844682,
+      "kim": 79937,
+      "jun": 62104,
+      "kwon": 8767,
+      "song": 934,
+      "voters": 1194471,
+      "voted": 1002149,
+      "invalid": 5725,
+      "turnout": 83.9
+    },
+    {
+      "name": "서울",
+      "fullName": "서울특별시",
+      "lee": 3105459,
+      "kim": 2738405,
+      "jun": 655346,
+      "kwon": 83900,
+      "song": 5998,
+      "voters": 8293885,
+      "voted": 6641606,
+      "invalid": 52498,
+      "turnout": 80.08
+    },
+    {
+      "name": "인천",
+      "fullName": "인천광역시",
+      "lee": 1044295,
+      "kim": 776952,
+      "jun": 176739,
+      "kwon": 20743,
+      "song": 2098,
+      "voters": 2619348,
+      "voted": 2035355,
+      "invalid": 14528,
+      "turnout": 77.7
+    },
+    {
+      "name": "제주",
+      "fullName": "제주특별자치도",
+      "lee": 228729,
+      "kim": 145290,
+      "jun": 36909,
+      "kwon": 6191,
+      "song": 528,
+      "voters": 565255,
+      "voted": 421576,
+      "invalid": 3929,
+      "turnout": 74.58
+    },
+    {
+      "name": "대전",
+      "fullName": "대전광역시",
+      "lee": 470321,
+      "kim": 393549,
+      "jun": 94724,
+      "kwon": 9905,
+      "song": 1109,
+      "voters": 1241882,
+      "voted": 977609,
+      "invalid": 8001,
+      "turnout": 78.72
+    },
+    {
+      "name": "충청남",
+      "fullName": "충청남도",
+      "lee": 661316,
+      "kim": 600108,
+      "jun": 111092,
+      "kwon": 12893,
+      "song": 1519,
+      "voters": 1839339,
+      "voted": 1397521,
+      "invalid": 10593,
+      "turnout": 75.98
+    },
+    {
+      "name": "세종",
+      "fullName": "세종특별자치시",
+      "lee": 140620,
+      "kim": 83965,
+      "jun": 25004,
+      "kwon": 2961,
+      "song": 235,
+      "voters": 307067,
+      "voted": 254695,
+      "invalid": 1910,
+      "turnout": 82.94
+    },
+    {
+      "name": "충청북",
+      "fullName": "충청북도",
+      "lee": 501990,
+      "kim": 457065,
+      "jun": 86984,
+      "kwon": 10169,
+      "song": 1228,
+      "voters": 1379142,
+      "voted": 1065558,
+      "invalid": 8122,
+      "turnout": 77.26
+    },
+    {
+      "name": "강원",
+      "fullName": "강원특별자치도",
+      "lee": 449161,
+      "kim": 483360,
+      "jun": 78704,
+      "kwon": 9422,
+      "song": 1137,
+      "voters": 1327019,
+      "voted": 1029407,
+      "invalid": 7623,
+      "turnout": 77.57
+    },
+    {
+      "name": "울산",
+      "fullName": "울산광역시",
+      "lee": 315820,
+      "kim": 353180,
+      "jun": 63177,
+      "kwon": 9299,
+      "song": 899,
+      "voters": 934509,
+      "voted": 747950,
+      "invalid": 5575,
+      "turnout": 80.04
+    },
+    {
+      "name": "부산",
+      "fullName": "부산광역시",
+      "lee": 895213,
+      "kim": 1146238,
+      "jun": 168473,
+      "kwon": 18189,
+      "song": 2099,
+      "voters": 2865552,
+      "voted": 2245755,
+      "invalid": 15543,
+      "turnout": 78.37
+    },
+    {
+      "name": "경상남",
+      "fullName": "경상남도",
+      "lee": 851733,
+      "kim": 1123843,
+      "jun": 161579,
+      "kwon": 21809,
+      "song": 2678,
+      "voters": 2776028,
+      "voted": 2179989,
+      "invalid": 18347,
+      "turnout": 78.53
+    },
+    {
+      "name": "경상북",
+      "fullName": "경상북도",
+      "lee": 442683,
+      "kim": 1159594,
+      "jun": 116094,
+      "kwon": 13884,
+      "song": 1788,
+      "voters": 2213614,
+      "voted": 1747364,
+      "invalid": 13321,
+      "turnout": 78.94
+    },
+    {
+      "name": "대구",
+      "fullName": "대구광역시",
+      "lee": 379130,
+      "kim": 1103913,
+      "jun": 135376,
+      "kwon": 12531,
+      "song": 1362,
+      "voters": 2049078,
+      "voted": 1643051,
+      "invalid": 10739,
+      "turnout": 80.18
+    }
+  ],
+  "national": {
+    "voters": 44391871,
+    "voted": 35236497,
+    "total": 34980616,
+    "invalid": 255881,
+    "turnout": 79.38
+  },
+  "seoul": [
+    {
+      "name": "은평구",
+      "lee": 171417,
+      "kim": 118639,
+      "margin": 52778,
+      "total": 323455
+    },
+    {
+      "name": "강서구",
+      "lee": 196256,
+      "kim": 149837,
+      "margin": 46419,
+      "total": 389624
+    },
+    {
+      "name": "노원구",
+      "lee": 176604,
+      "kim": 131061,
+      "margin": 45543,
+      "total": 347826
+    },
+    {
+      "name": "관악구",
+      "lee": 171149,
+      "kim": 126951,
+      "margin": 44198,
+      "total": 347149
+    },
+    {
+      "name": "성북구",
+      "lee": 152624,
+      "kim": 111271,
+      "margin": 41353,
+      "total": 297996
+    },
+    {
+      "name": "중랑구",
+      "lee": 137420,
+      "kim": 102137,
+      "margin": 35283,
+      "total": 265550
+    },
+    {
+      "name": "강북구",
+      "lee": 105780,
+      "kim": 72792,
+      "margin": 32988,
+      "total": 196573
+    },
+    {
+      "name": "구로구",
+      "lee": 139034,
+      "kim": 108039,
+      "margin": 30995,
+      "total": 276066
+    },
+    {
+      "name": "도봉구",
+      "lee": 110614,
+      "kim": 84148,
+      "margin": 26466,
+      "total": 214906
+    },
+    {
+      "name": "서대문구",
+      "lee": 107451,
+      "kim": 81882,
+      "margin": 25569,
+      "total": 214510
+    },
+    {
+      "name": "금천구",
+      "lee": 83102,
+      "kim": 58686,
+      "margin": 24416,
+      "total": 159717
+    },
+    {
+      "name": "마포구",
+      "lee": 125049,
+      "kim": 101016,
+      "margin": 24033,
+      "total": 258285
+    },
+    {
+      "name": "양천구",
+      "lee": 143686,
+      "kim": 122867,
+      "margin": 20819,
+      "total": 297604
+    },
+    {
+      "name": "동대문구",
+      "lee": 117631,
+      "kim": 97549,
+      "margin": 20082,
+      "total": 244239
+    },
+    {
+      "name": "광진구",
+      "lee": 114304,
+      "kim": 94752,
+      "margin": 19552,
+      "total": 237662
+    },
+    {
+      "name": "동작구",
+      "lee": 128028,
+      "kim": 111735,
+      "margin": 16293,
+      "total": 272906
+    },
+    {
+      "name": "영등포구",
+      "lee": 123593,
+      "kim": 111861,
+      "margin": 11732,
+      "total": 269203
+    },
+    {
+      "name": "강동구",
+      "lee": 160645,
+      "kim": 149529,
+      "margin": 11116,
+      "total": 347804
+    },
+    {
+      "name": "종로구",
+      "lee": 47735,
+      "kim": 39574,
+      "margin": 8161,
+      "total": 98478
+    },
+    {
+      "name": "중구",
+      "lee": 40482,
+      "kim": 36302,
+      "margin": 4180,
+      "total": 86416
+    },
+    {
+      "name": "성동구",
+      "lee": 88028,
+      "kim": 84043,
+      "margin": 3985,
+      "total": 194775
+    },
+    {
+      "name": "용산구",
+      "lee": 58705,
+      "kim": 67927,
+      "margin": -9222,
+      "total": 142694
+    },
+    {
+      "name": "송파구",
+      "lee": 191678,
+      "kim": 212094,
+      "margin": -20416,
+      "total": 455145
+    },
+    {
+      "name": "서초구",
+      "lee": 94722,
+      "kim": 153536,
+      "margin": -58814,
+      "total": 279119
+    },
+    {
+      "name": "강남구",
+      "lee": 119722,
+      "kim": 210177,
+      "margin": -90455,
+      "total": 371406
+    }
+  ]
+}
