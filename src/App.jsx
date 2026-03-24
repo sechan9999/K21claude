@@ -1,169 +1,8 @@
-import React, { useState } from 'react';
-import { Download, Github, FileCode, Folder } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { BarChart, Bar, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
+import { MapPin, TrendingUp, Users, Activity, Download, BarChart3, ChevronDown, Award, Vote } from 'lucide-react';
 
-const CodeDownloader = () => {
-  const [downloadStatus, setDownloadStatus] = useState('');
-
-  const projectFiles = {
-    'package.json': `{
-  "name": "k21-election-dashboard",
-  "version": "1.0.0",
-  "description": "제21대 대통령 선거 개표 대시보드",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "recharts": "^2.5.0",
-    "lucide-react": "^0.263.1"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.0",
-    "vite": "^4.3.9",
-    "tailwindcss": "^3.3.2",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24"
-  }
-}`,
-    'README.md': `# 제21대 대통령 선거 개표 대시보드
-
-2025년 6월 3일에 실시된 제21대 대한민국 대통령 선거의 개표 결과를 실시간으로 시각화하고 분석하는 인터랙티브 대시보드입니다.
-
-## 주요 기능
-
-- 📊 실시간 개표 현황 모니터링
-- 🗺️ 17개 시도별 상세 득표 분석
-- 📈 후보자별 득표율 비교 차트
-- 📋 시도별 상세 득표수 테이블
-- 📉 통계 분석 및 인사이트
-- 💾 JSON/CSV 데이터 다운로드
-
-## 기술 스택
-
-- React 18
-- Vite
-- Recharts (데이터 시각화)
-- Tailwind CSS
-- Lucide React (아이콘)
-
-## 설치 및 실행
-
-\`\`\`bash
-# 의존성 설치
-npm install
-
-# 개발 서버 실행
-npm run dev
-
-# 프로덕션 빌드
-npm run build
-\`\`\`
-
-## 데이터 출처
-
-중앙선거관리위원회 선거통계시스템
-
-## 라이선스
-
-MIT License
-`,
-    'index.html': `<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>제21대 대통령 선거 개표 대시보드</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>`,
-    'vite.config.js': `import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  plugins: [react()],
-})`,
-    'tailwind.config.js': `/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}`,
-    'postcss.config.js': `export default {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-}`,
-    'src/main.jsx': `import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)`,
-    'src/index.css': `@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}`,
-    '.gitignore': `# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?`
-  };
-
-  const appJsxCode = `import React, { useState, useMemo } from 'react';
-import { BarChart, Bar, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
-import { MapPin, TrendingUp, Users, Activity, Download, Table, BarChart3 } from 'lucide-react';
-
-// 제21대 대통령 선거 실제 데이터
+// 제21대 대통령 선거 실제 데이터 (2025.06.03)
 const electionData = {
   candidates: [
     { id: 1, name: '이재명', party: '더불어민주당', color: '#0066CC', votes: 17287513, percentage: 49.42 },
@@ -193,224 +32,569 @@ const electionData = {
   ]
 };
 
-// 여기에 전체 컴포넌트 코드를 작성하세요
-// (현재 election-2025-dashboard artifact의 코드를 복사하세요)
+const totalVotes = electionData.candidates.reduce((s, c) => s + c.votes, 0);
+const totalVoters = electionData.detailedRegions.reduce((s, r) => s + r.voters, 0);
+const avgTurnout = (electionData.detailedRegions.reduce((s, r) => s + r.turnout, 0) / electionData.detailedRegions.length).toFixed(1);
 
-export default function App() {
-  // 컴포넌트 로직
-  return <div>대시보드</div>;
-}`;
+function formatNumber(n) {
+  return n.toLocaleString('ko-KR');
+}
 
-  const downloadAllFiles = () => {
-    setDownloadStatus('파일 생성 중...');
-
-    const zipContent = [];
-
-    Object.entries(projectFiles).forEach(([filename, content]) => {
-      zipContent.push(`\n\n${'='.repeat(80)}\n파일: ${filename}\n${'='.repeat(80)}\n${content}`);
-    });
-
-    zipContent.push(`\n\n${'='.repeat(80)}\n파일: src/App.jsx\n${'='.repeat(80)}\n${appJsxCode}`);
-
-    const blob = new Blob([zipContent.join('\n')], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'k21-election-dashboard-all-files.txt';
-    link.click();
-    URL.revokeObjectURL(url);
-
-    setDownloadStatus('다운로드 완료! 파일들을 확인하세요.');
-
-    setTimeout(() => setDownloadStatus(''), 3000);
-  };
-
-  const downloadSingleFile = (filename, content) => {
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
+function StatCard({ icon: Icon, label, value, sub, color }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            K21 선거 대시보드 코드 다운로드
-          </h1>
-          <p className="text-slate-300 text-lg mb-6">
-            제21대 대통령 선거 개표 대시보드의 모든 소스코드를 다운로드하세요
-          </p>
-
-          <button
-            onClick={downloadAllFiles}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg transition-all transform hover:scale-105"
-          >
-            <Download size={24} />
-            전체 프로젝트 파일 다운로드
-          </button>
-
-          {downloadStatus && (
-            <div className="mt-4 p-4 bg-green-900/30 border border-green-700 rounded-lg text-green-400">
-              {downloadStatus}
-            </div>
-          )}
+    <div className="bg-slate-800/60 backdrop-blur rounded-2xl p-5 border border-slate-700 hover:border-slate-500 transition-all">
+      <div className="flex items-center gap-3 mb-2">
+        <div className={`p-2 rounded-lg ${color}`}>
+          <Icon size={18} className="text-white" />
         </div>
+        <span className="text-slate-400 text-sm font-medium">{label}</span>
+      </div>
+      <div className="text-2xl font-bold text-white">{value}</div>
+      {sub && <div className="text-xs text-slate-500 mt-1">{sub}</div>}
+    </div>
+  );
+}
 
-        {/* GitHub 설정 가이드 */}
-        <div className="bg-slate-800/50 backdrop-blur rounded-2xl p-8 border border-slate-700 mb-8">
-          <div className="flex items-center gap-3 mb-6">
-            <Github size={32} className="text-purple-400" />
-            <h2 className="text-3xl font-bold text-white">GitHub 업로드 가이드</h2>
-          </div>
-
-          <div className="space-y-6">
-            <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-600">
-              <h3 className="text-xl font-semibold text-blue-400 mb-4">1단계: 프로젝트 폴더 생성</h3>
-              <div className="bg-black/50 p-4 rounded-lg font-mono text-sm text-green-400">
-                <p>mkdir k21-election-dashboard</p>
-                <p>cd k21-election-dashboard</p>
-              </div>
-            </div>
-
-            <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-600">
-              <h3 className="text-xl font-semibold text-blue-400 mb-4">2단계: Git 초기화 및 파일 추가</h3>
-              <div className="bg-black/50 p-4 rounded-lg font-mono text-sm text-green-400">
-                <p>git init</p>
-                <p>git add .</p>
-                <p>git commit -m "Initial commit: K21 election dashboard"</p>
-              </div>
-            </div>
-
-            <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-600">
-              <h3 className="text-xl font-semibold text-blue-400 mb-4">3단계: GitHub 저장소 연결</h3>
-              <div className="bg-black/50 p-4 rounded-lg font-mono text-sm text-green-400">
-                <p>git remote add origin https://github.com/sechan9999/K21claude.git</p>
-                <p>git branch -M main</p>
-                <p>git push -u origin main</p>
-              </div>
-            </div>
-
-            <div className="bg-blue-900/30 p-6 rounded-xl border border-blue-700">
-              <h3 className="text-xl font-semibold text-yellow-400 mb-4">GitHub 저장소 사전 생성 필요</h3>
-              <p className="text-slate-300 mb-4">
-                위 명령어를 실행하기 전에 GitHub에서 먼저 저장소를 생성해야 합니다:
-              </p>
-              <ol className="list-decimal list-inside space-y-2 text-slate-300">
-                <li>GitHub.com에 로그인</li>
-                <li>우측 상단 "+" 버튼 클릭 → "New repository"</li>
-                <li>Repository name: <span className="text-blue-400 font-semibold">K21claude</span></li>
-                <li>Public 또는 Private 선택</li>
-                <li>"Create repository" 클릭</li>
-                <li>생성된 저장소 URL 확인 후 위 명령어 실행</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-
-        {/* 프로젝트 구조 */}
-        <div className="bg-slate-800/50 backdrop-blur rounded-2xl p-8 border border-slate-700 mb-8">
-          <div className="flex items-center gap-3 mb-6">
-            <Folder size={32} className="text-yellow-400" />
-            <h2 className="text-3xl font-bold text-white">프로젝트 구조</h2>
-          </div>
-
-          <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-600 font-mono text-sm">
-            <div className="text-slate-300 space-y-1">
-              <p>k21-election-dashboard/</p>
-              <p className="ml-4">├── public/</p>
-              <p className="ml-4">├── src/</p>
-              <p className="ml-8">│   ├── App.jsx</p>
-              <p className="ml-8">│   ├── main.jsx</p>
-              <p className="ml-8">│   └── index.css</p>
-              <p className="ml-4">├── .gitignore</p>
-              <p className="ml-4">├── index.html</p>
-              <p className="ml-4">├── package.json</p>
-              <p className="ml-4">├── vite.config.js</p>
-              <p className="ml-4">├── tailwind.config.js</p>
-              <p className="ml-4">├── postcss.config.js</p>
-              <p className="ml-4">└── README.md</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 개별 파일 다운로드 */}
-        <div className="bg-slate-800/50 backdrop-blur rounded-2xl p-8 border border-slate-700">
-          <div className="flex items-center gap-3 mb-6">
-            <FileCode size={32} className="text-green-400" />
-            <h2 className="text-3xl font-bold text-white">개별 파일 다운로드</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {Object.entries(projectFiles).map(([filename, content]) => (
-              <button
-                key={filename}
-                onClick={() => downloadSingleFile(filename, content)}
-                className="flex items-center gap-3 p-4 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg border border-slate-600 transition text-left"
-              >
-                <FileCode size={20} className="text-blue-400" />
-                <span className="text-white font-mono text-sm">{filename}</span>
-                <Download size={16} className="ml-auto text-slate-400" />
-              </button>
-            ))}
-            <button
-              onClick={() => downloadSingleFile('src/App.jsx', appJsxCode)}
-              className="flex items-center gap-3 p-4 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg border border-slate-600 transition text-left"
+function CandidateBar({ candidate, maxVotes, rank }) {
+  const width = (candidate.votes / maxVotes) * 100;
+  const isWinner = rank === 0;
+  return (
+    <div className={`flex items-center gap-4 p-4 rounded-xl transition-all ${isWinner ? 'bg-blue-900/30 border border-blue-700/50' : 'hover:bg-slate-800/40'}`}>
+      <div className="w-6 text-center">
+        {isWinner ? (
+          <Award size={20} className="text-yellow-400" />
+        ) : (
+          <span className="text-slate-500 text-sm font-bold">{rank + 1}</span>
+        )}
+      </div>
+      <div className="w-24 flex-shrink-0">
+        <div className="font-bold text-white text-lg">{candidate.name}</div>
+        <div className="text-xs" style={{ color: candidate.color }}>{candidate.party}</div>
+      </div>
+      <div className="flex-1">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 bg-slate-700/50 rounded-full h-8 overflow-hidden">
+            <div
+              className="h-full rounded-full flex items-center justify-end pr-3 transition-all duration-1000"
+              style={{ width: `${width}%`, backgroundColor: candidate.color }}
             >
-              <FileCode size={20} className="text-blue-400" />
-              <span className="text-white font-mono text-sm">src/App.jsx</span>
-              <Download size={16} className="ml-auto text-slate-400" />
-            </button>
-          </div>
-        </div>
-
-        {/* 실행 가이드 */}
-        <div className="mt-8 bg-slate-800/50 backdrop-blur rounded-2xl p-8 border border-slate-700">
-          <h2 className="text-3xl font-bold text-white mb-6">실행 가이드</h2>
-
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-xl font-semibold text-blue-400 mb-2">의존성 설치</h3>
-              <div className="bg-black/50 p-4 rounded-lg font-mono text-sm text-green-400">
-                npm install
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-blue-400 mb-2">개발 서버 실행</h3>
-              <div className="bg-black/50 p-4 rounded-lg font-mono text-sm text-green-400">
-                npm run dev
-              </div>
-              <p className="text-slate-400 text-sm mt-2">브라우저에서 http://localhost:5173 접속</p>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-blue-400 mb-2">프로덕션 빌드</h3>
-              <div className="bg-black/50 p-4 rounded-lg font-mono text-sm text-green-400">
-                npm run build
-              </div>
+              <span className="text-white text-xs font-bold drop-shadow">{candidate.percentage}%</span>
             </div>
           </div>
         </div>
-
-        {/* 중요 안내 */}
-        <div className="mt-8 bg-yellow-900/30 backdrop-blur rounded-2xl p-6 border border-yellow-700">
-          <h3 className="text-xl font-semibold text-yellow-400 mb-3">중요 안내</h3>
-          <p className="text-slate-300 mb-3">
-            다운로드된 텍스트 파일에서 각 파일의 내용을 복사하여 해당 위치에 생성해주세요.
-          </p>
-          <p className="text-slate-300">
-            <strong>src/App.jsx</strong> 파일에는 현재 대시보드의 전체 코드를 복사해 넣으셔야 합니다.
-            (현재 보고 계신 election-2025-dashboard artifact의 코드)
-          </p>
-        </div>
+      </div>
+      <div className="w-32 text-right">
+        <div className="text-white font-mono font-bold">{formatNumber(candidate.votes)}</div>
+        <div className="text-slate-500 text-xs">표</div>
       </div>
     </div>
   );
-};
+}
 
-export default CodeDownloader;
+function RegionTable({ regions, sortKey, onSort }) {
+  const sorted = useMemo(() => {
+    return [...regions].sort((a, b) => {
+      if (sortKey === 'name') return a.name.localeCompare(b.name, 'ko');
+      if (sortKey === 'turnout') return b.turnout - a.turnout;
+      if (sortKey === 'lee') return b.lee - a.lee;
+      if (sortKey === 'kim') return b.kim - a.kim;
+      if (sortKey === 'margin') return (b.lee - b.kim) - (a.lee - a.kim);
+      return 0;
+    });
+  }, [regions, sortKey]);
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-slate-700">
+            {[
+              { key: 'name', label: '시도' },
+              { key: 'lee', label: '이재명' },
+              { key: 'kim', label: '김문수' },
+              { key: 'margin', label: '격차' },
+              { key: 'turnout', label: '투표율' },
+            ].map(col => (
+              <th
+                key={col.key}
+                onClick={() => onSort(col.key)}
+                className={`py-3 px-3 text-left cursor-pointer hover:text-blue-400 transition ${sortKey === col.key ? 'text-blue-400' : 'text-slate-400'}`}
+              >
+                {col.label} {sortKey === col.key && <ChevronDown size={12} className="inline" />}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {sorted.map((r, i) => {
+            const margin = r.lee - r.kim;
+            const winner = margin > 0 ? 'lee' : 'kim';
+            return (
+              <tr key={r.name} className={`border-b border-slate-800 hover:bg-slate-800/40 transition ${i % 2 === 0 ? '' : 'bg-slate-900/20'}`}>
+                <td className="py-3 px-3 font-medium text-white">{r.name}</td>
+                <td className="py-3 px-3">
+                  <span className={winner === 'lee' ? 'text-blue-400 font-bold' : 'text-slate-300'}>{formatNumber(r.lee)}</span>
+                </td>
+                <td className="py-3 px-3">
+                  <span className={winner === 'kim' ? 'text-red-400 font-bold' : 'text-slate-300'}>{formatNumber(r.kim)}</span>
+                </td>
+                <td className="py-3 px-3">
+                  <span className={`font-bold ${margin > 0 ? 'text-blue-400' : 'text-red-400'}`}>
+                    {margin > 0 ? '+' : ''}{formatNumber(margin)}
+                  </span>
+                </td>
+                <td className="py-3 px-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-16 bg-slate-700 rounded-full h-2">
+                      <div className="h-2 rounded-full bg-emerald-500" style={{ width: `${r.turnout}%` }} />
+                    </div>
+                    <span className="text-emerald-400 text-xs font-mono">{r.turnout}%</span>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [sortKey, setSortKey] = useState('margin');
+  const maxVotes = Math.max(...electionData.candidates.map(c => c.votes));
+
+  const barChartData = useMemo(() =>
+    electionData.detailedRegions.map(r => ({
+      name: r.name,
+      이재명: r.lee,
+      김문수: r.kim,
+      이준석: r.jun,
+    })), []
+  );
+
+  const pieData = useMemo(() =>
+    electionData.candidates.map(c => ({
+      name: c.name,
+      value: c.votes,
+      color: c.color,
+    })), []
+  );
+
+  const turnoutData = useMemo(() =>
+    electionData.detailedRegions
+      .map(r => ({ name: r.name, turnout: r.turnout, voters: r.voters }))
+      .sort((a, b) => b.turnout - a.turnout),
+    []
+  );
+
+  // 수도권 vs 비수도권
+  const metroRegions = ['서울', '경기', '인천'];
+  const metroStats = useMemo(() => {
+    const metro = electionData.detailedRegions.filter(r => metroRegions.includes(r.name));
+    const nonMetro = electionData.detailedRegions.filter(r => !metroRegions.includes(r.name));
+    return {
+      metro: { lee: metro.reduce((s,r) => s+r.lee, 0), kim: metro.reduce((s,r) => s+r.kim, 0) },
+      nonMetro: { lee: nonMetro.reduce((s,r) => s+r.lee, 0), kim: nonMetro.reduce((s,r) => s+r.kim, 0) },
+    };
+  }, []);
+
+  const downloadCSV = () => {
+    const header = '시도,이재명,김문수,이준석,권영국,송진호,투표율,선거인수\n';
+    const rows = electionData.detailedRegions.map(r =>
+      `${r.name},${r.lee},${r.kim},${r.jun},${r.kwon},${r.song},${r.turnout},${r.voters}`
+    ).join('\n');
+    const blob = new Blob(['\uFEFF' + header + rows], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'K21_선거결과.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadJSON = () => {
+    const blob = new Blob([JSON.stringify(electionData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'K21_선거결과.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const tabs = [
+    { id: 'overview', label: '개표 현황', icon: Activity },
+    { id: 'regions', label: '시도별 분석', icon: MapPin },
+    { id: 'charts', label: '비교 차트', icon: BarChart3 },
+    { id: 'insights', label: '통계 인사이트', icon: TrendingUp },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* Header */}
+      <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                제21대 대통령선거 개표 대시보드
+              </h1>
+              <p className="text-slate-500 text-sm mt-1">2025년 6월 3일 | 개표율 100% | 중앙선거관리위원회</p>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={downloadCSV} className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition">
+                <Download size={14} /> CSV
+              </button>
+              <button onClick={downloadJSON} className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition">
+                <Download size={14} /> JSON
+              </button>
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex gap-1 mt-4 -mb-px">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-lg transition ${
+                  activeTab === tab.id
+                    ? 'bg-slate-800 text-white border-b-2 border-blue-500'
+                    : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50'
+                }`}
+              >
+                <tab.icon size={14} />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <StatCard icon={Vote} label="총 투표수" value={formatNumber(totalVotes)} sub="유효투표" color="bg-blue-600" />
+          <StatCard icon={Users} label="총 선거인수" value={formatNumber(totalVoters)} sub="17개 시도" color="bg-purple-600" />
+          <StatCard icon={Activity} label="평균 투표율" value={`${avgTurnout}%`} sub="전국 평균" color="bg-emerald-600" />
+          <StatCard icon={TrendingUp} label="당선인 격차" value={formatNumber(electionData.candidates[0].votes - electionData.candidates[1].votes)} sub={`${(electionData.candidates[0].percentage - electionData.candidates[1].percentage).toFixed(2)}%p`} color="bg-amber-600" />
+        </div>
+
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="space-y-6">
+            {/* Candidate Results */}
+            <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <Award size={20} className="text-yellow-400" /> 후보별 득표 현황
+              </h2>
+              <div className="space-y-2">
+                {electionData.candidates.map((c, i) => (
+                  <CandidateBar key={c.id} candidate={c} maxVotes={maxVotes} rank={i} />
+                ))}
+              </div>
+            </div>
+
+            {/* Pie + Metro Split */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-white mb-4">득표율 분포</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={110}
+                      innerRadius={60}
+                      dataKey="value"
+                      stroke="#0f172a"
+                      strokeWidth={3}
+                    >
+                      {pieData.map((entry, idx) => (
+                        <Cell key={idx} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(val) => formatNumber(val) + '표'}
+                      contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#e2e8f0' }}
+                    />
+                    <Legend
+                      formatter={(value) => <span style={{ color: '#e2e8f0', fontSize: '12px' }}>{value}</span>}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-white mb-4">수도권 vs 비수도권</h3>
+                <div className="space-y-6 mt-6">
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-slate-400">수도권 (서울·경기·인천)</span>
+                    </div>
+                    <div className="flex h-10 rounded-lg overflow-hidden">
+                      <div
+                        className="flex items-center justify-center text-xs font-bold text-white"
+                        style={{
+                          width: `${(metroStats.metro.lee / (metroStats.metro.lee + metroStats.metro.kim)) * 100}%`,
+                          backgroundColor: '#0066CC'
+                        }}
+                      >
+                        이재명 {((metroStats.metro.lee / (metroStats.metro.lee + metroStats.metro.kim)) * 100).toFixed(1)}%
+                      </div>
+                      <div
+                        className="flex items-center justify-center text-xs font-bold text-white"
+                        style={{
+                          width: `${(metroStats.metro.kim / (metroStats.metro.lee + metroStats.metro.kim)) * 100}%`,
+                          backgroundColor: '#E61E2B'
+                        }}
+                      >
+                        김문수 {((metroStats.metro.kim / (metroStats.metro.lee + metroStats.metro.kim)) * 100).toFixed(1)}%
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-slate-400">비수도권</span>
+                    </div>
+                    <div className="flex h-10 rounded-lg overflow-hidden">
+                      <div
+                        className="flex items-center justify-center text-xs font-bold text-white"
+                        style={{
+                          width: `${(metroStats.nonMetro.lee / (metroStats.nonMetro.lee + metroStats.nonMetro.kim)) * 100}%`,
+                          backgroundColor: '#0066CC'
+                        }}
+                      >
+                        이재명 {((metroStats.nonMetro.lee / (metroStats.nonMetro.lee + metroStats.nonMetro.kim)) * 100).toFixed(1)}%
+                      </div>
+                      <div
+                        className="flex items-center justify-center text-xs font-bold text-white"
+                        style={{
+                          width: `${(metroStats.nonMetro.kim / (metroStats.nonMetro.lee + metroStats.nonMetro.kim)) * 100}%`,
+                          backgroundColor: '#E61E2B'
+                        }}
+                      >
+                        김문수 {((metroStats.nonMetro.kim / (metroStats.nonMetro.lee + metroStats.nonMetro.kim)) * 100).toFixed(1)}%
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700">
+                    <div className="text-center">
+                      <div className="text-blue-400 font-bold text-lg">
+                        +{formatNumber(metroStats.metro.lee - metroStats.metro.kim)}
+                      </div>
+                      <div className="text-slate-500 text-xs">수도권 이재명 격차</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-blue-400 font-bold text-lg">
+                        +{formatNumber(metroStats.nonMetro.lee - metroStats.nonMetro.kim)}
+                      </div>
+                      <div className="text-slate-500 text-xs">비수도권 이재명 격차</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Regions Tab */}
+        {activeTab === 'regions' && (
+          <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <MapPin size={20} className="text-emerald-400" /> 시도별 상세 결과
+            </h2>
+            <RegionTable regions={electionData.detailedRegions} sortKey={sortKey} onSort={setSortKey} />
+          </div>
+        )}
+
+        {/* Charts Tab */}
+        {activeTab === 'charts' && (
+          <div className="space-y-6">
+            {/* Regional Bar Chart */}
+            <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+              <h3 className="text-lg font-bold text-white mb-4">시도별 주요 후보 득표수</h3>
+              <ResponsiveContainer width="100%" height={450}>
+                <BarChart data={barChartData} margin={{ top: 10, right: 20, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                  <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                  <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickFormatter={v => (v / 10000).toFixed(0) + '만'} />
+                  <Tooltip
+                    formatter={(val) => formatNumber(val) + '표'}
+                    contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#e2e8f0' }}
+                  />
+                  <Legend formatter={(value) => <span style={{ color: '#e2e8f0', fontSize: '12px' }}>{value}</span>} />
+                  <Bar dataKey="이재명" fill="#0066CC" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="김문수" fill="#E61E2B" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="이준석" fill="#FF9800" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Turnout Chart */}
+            <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+              <h3 className="text-lg font-bold text-white mb-4">시도별 투표율 (높은 순)</h3>
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={turnoutData} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                  <XAxis type="number" domain={[70, 85]} tick={{ fill: '#94a3b8', fontSize: 11 }} tickFormatter={v => v + '%'} />
+                  <YAxis type="category" dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} width={40} />
+                  <Tooltip
+                    formatter={(val) => val + '%'}
+                    contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#e2e8f0' }}
+                  />
+                  <Bar dataKey="turnout" fill="#10b981" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
+
+        {/* Insights Tab */}
+        {activeTab === 'insights' && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* 이재명 강세 지역 */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-blue-400 mb-4">이재명 강세 지역 TOP 5</h3>
+                {[...electionData.detailedRegions]
+                  .sort((a, b) => {
+                    const aPct = a.lee / (a.lee + a.kim + a.jun + a.kwon + a.song);
+                    const bPct = b.lee / (b.lee + b.kim + b.jun + b.kwon + b.song);
+                    return bPct - aPct;
+                  })
+                  .slice(0, 5)
+                  .map((r, i) => {
+                    const total = r.lee + r.kim + r.jun + r.kwon + r.song;
+                    const pct = ((r.lee / total) * 100).toFixed(1);
+                    return (
+                      <div key={r.name} className="flex items-center justify-between py-3 border-b border-slate-700/50">
+                        <div className="flex items-center gap-3">
+                          <span className="text-blue-400 font-bold w-6">{i + 1}</span>
+                          <span className="text-white font-medium">{r.name}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-24 bg-slate-700 rounded-full h-2">
+                            <div className="h-2 rounded-full bg-blue-500" style={{ width: `${pct}%` }} />
+                          </div>
+                          <span className="text-blue-400 font-mono text-sm font-bold w-14 text-right">{pct}%</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+
+              {/* 김문수 강세 지역 */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-red-400 mb-4">김문수 강세 지역 TOP 5</h3>
+                {[...electionData.detailedRegions]
+                  .sort((a, b) => {
+                    const aPct = a.kim / (a.lee + a.kim + a.jun + a.kwon + a.song);
+                    const bPct = b.kim / (b.lee + b.kim + b.jun + b.kwon + b.song);
+                    return bPct - aPct;
+                  })
+                  .slice(0, 5)
+                  .map((r, i) => {
+                    const total = r.lee + r.kim + r.jun + r.kwon + r.song;
+                    const pct = ((r.kim / total) * 100).toFixed(1);
+                    return (
+                      <div key={r.name} className="flex items-center justify-between py-3 border-b border-slate-700/50">
+                        <div className="flex items-center gap-3">
+                          <span className="text-red-400 font-bold w-6">{i + 1}</span>
+                          <span className="text-white font-medium">{r.name}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-24 bg-slate-700 rounded-full h-2">
+                            <div className="h-2 rounded-full bg-red-500" style={{ width: `${pct}%` }} />
+                          </div>
+                          <span className="text-red-400 font-mono text-sm font-bold w-14 text-right">{pct}%</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+
+            {/* 투표율 인사이트 */}
+            <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+              <h3 className="text-lg font-bold text-emerald-400 mb-4">투표율 인사이트</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {(() => {
+                  const sorted = [...electionData.detailedRegions].sort((a, b) => b.turnout - a.turnout);
+                  const highest = sorted[0];
+                  const lowest = sorted[sorted.length - 1];
+                  return (
+                    <>
+                      <div className="bg-slate-900/50 rounded-xl p-4 text-center">
+                        <div className="text-emerald-400 text-2xl font-bold">{highest.turnout}%</div>
+                        <div className="text-white font-medium mt-1">{highest.name}</div>
+                        <div className="text-slate-500 text-xs mt-1">최고 투표율</div>
+                      </div>
+                      <div className="bg-slate-900/50 rounded-xl p-4 text-center">
+                        <div className="text-amber-400 text-2xl font-bold">{lowest.turnout}%</div>
+                        <div className="text-white font-medium mt-1">{lowest.name}</div>
+                        <div className="text-slate-500 text-xs mt-1">최저 투표율</div>
+                      </div>
+                      <div className="bg-slate-900/50 rounded-xl p-4 text-center">
+                        <div className="text-purple-400 text-2xl font-bold">{(highest.turnout - lowest.turnout).toFixed(1)}%p</div>
+                        <div className="text-white font-medium mt-1">최대 편차</div>
+                        <div className="text-slate-500 text-xs mt-1">{highest.name} - {lowest.name}</div>
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
+
+            {/* 경합 지역 */}
+            <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+              <h3 className="text-lg font-bold text-amber-400 mb-4">접전 지역 (격차 5%p 이내)</h3>
+              <div className="space-y-3">
+                {[...electionData.detailedRegions]
+                  .map(r => {
+                    const total = r.lee + r.kim + r.jun + r.kwon + r.song;
+                    const leePct = (r.lee / total) * 100;
+                    const kimPct = (r.kim / total) * 100;
+                    return { ...r, leePct, kimPct, gap: Math.abs(leePct - kimPct) };
+                  })
+                  .filter(r => r.gap < 5)
+                  .sort((a, b) => a.gap - b.gap)
+                  .map(r => (
+                    <div key={r.name} className="flex items-center gap-4 p-3 bg-slate-900/40 rounded-lg">
+                      <span className="text-white font-bold w-12">{r.name}</span>
+                      <div className="flex-1 flex h-6 rounded overflow-hidden">
+                        <div className="flex items-center justify-center text-[10px] font-bold text-white" style={{ width: `${r.leePct}%`, backgroundColor: '#0066CC' }}>
+                          {r.leePct.toFixed(1)}%
+                        </div>
+                        <div className="flex items-center justify-center text-[10px] font-bold text-white" style={{ width: `${r.kimPct}%`, backgroundColor: '#E61E2B' }}>
+                          {r.kimPct.toFixed(1)}%
+                        </div>
+                      </div>
+                      <span className="text-amber-400 font-mono text-xs font-bold w-16 text-right">
+                        {r.gap.toFixed(1)}%p
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-800 mt-12 py-6 text-center text-slate-600 text-xs">
+        <p>데이터 출처: 중앙선거관리위원회 선거통계시스템 | 제21대 대통령선거 2025.06.03</p>
+        <p className="mt-1">
+          <a href="https://github.com/sechan9999/K21claude" className="text-slate-500 hover:text-blue-400 transition" target="_blank" rel="noopener">
+            GitHub: sechan9999/K21claude
+          </a>
+          {' · '}MIT License
+        </p>
+      </footer>
+    </div>
+  );
+}
