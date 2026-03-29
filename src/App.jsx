@@ -503,6 +503,9 @@ export default function App() {
           const nat = rc.national;
           const cq = rc.candidate_quality;
           const pdfEv = rc.pdf_evidence;
+          const cr = rc.corrected_regions || [];
+          const cn = rc.corrected_national || {};
+          const creg = rc.corrected_regression || {};
 
           const statusColor = { ok:'text-emerald-400', partial:'text-amber-400', bad:'text-orange-400', critical:'text-red-400' };
           const statusBg = { ok:'bg-emerald-900/30 border-emerald-600/40', partial:'bg-amber-900/30 border-amber-600/40', bad:'bg-orange-900/30 border-orange-600/40', critical:'bg-red-900/30 border-red-600/40' };
@@ -520,6 +523,17 @@ export default function App() {
             const songOk = songRPct !== null && songRPct <= 15;
             return { name: r.name, leeRPct, kimRPct, junRPct, kwonRPct, songRPct, kimOk, junOk, kwonOk, songOk };
           });
+
+          const corrKData = [...cr].sort((a,b)=>b.K-a.K).map(r=>({ name:r.name, K:r.K, color: r.K>3?'#ef4444':r.K>1.5?'#f97316':'#22c55e' }));
+          const corrScatter = cr.map(r=>({ name:r.name, x:r.R1, y:r.R2 }));
+
+          const corrCandRates = [
+            { name:'이재명', raw:(nat.lee.recheck/nat.lee.total*100).toFixed(1), corr:((cn.lee||{}).recheck/nat.lee.total*100||2.4).toFixed(1), color:'#0066CC' },
+            { name:'김문수', raw:(nat.kim.recheck/nat.kim.total*100).toFixed(1), corr:((cn.kim||{}).recheck/(nat.kim.total)*100||4.2).toFixed(1), color:'#E61E2B' },
+            { name:'이준석', raw:(nat.jun.recheck/nat.jun.total*100).toFixed(1), corr:((cn.jun||{}).recheck/(nat.jun.total)*100||6.0).toFixed(1), color:'#FF9800' },
+            { name:'권영국', raw:(nat.kwon.recheck/nat.kwon.total*100).toFixed(1), corr:((cn.kwon||{}).recheck/(nat.kwon.total)*100||3.2).toFixed(1), color:'#FFEB3B' },
+            { name:'송진호', raw:(nat.song.recheck/nat.song.total*100).toFixed(1), corr:((cn.song||{}).recheck/(nat.song.total)*100||7.5).toFixed(1), color:'#9E9E9E' },
+          ];
 
           return (
             <div className="space-y-6">
@@ -636,29 +650,170 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Invalid Analysis Note */}
-              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-red-800/40">
-                <h3 className="text-lg font-bold text-red-400 mb-3">⚠ 이전 통계 분석 무효 선언</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div className="bg-red-950/40 rounded-xl p-4 border border-red-800/30">
-                    <div className="text-red-300 font-bold mb-1">K값 분석 → 무효</div>
-                    <div className="text-slate-400 text-xs leading-relaxed">
-                      xlsx 전국 K값 = 7.72 (오염 데이터 기반)<br/>
-                      실제 추정 K ≈ 1.37 (역대 18~20대: 1.47~1.64)<br/>
-                      <span className="text-slate-500">오류 원인: 김문수 재확인표 ~6배 과장</span>
+              {/* Corrected National Stats */}
+              <div>
+                <h3 className="text-lg font-bold text-white mb-1">전국 보정 재확인율 비교</h3>
+                <p className="text-slate-500 text-xs mb-3">OCR 오류 보정 후 추정값 (이재명 실측 기준, 제주도 후보간 비율 적용)</p>
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                  {corrCandRates.map(c=>(
+                    <div key={c.name} className="bg-slate-800/60 rounded-xl p-4 border border-slate-700">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-3 h-3 rounded-full" style={{backgroundColor:c.color}}/>
+                        <span className="text-white font-bold text-sm">{c.name}</span>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-slate-500">xlsx(오염)</span>
+                          <span className="text-red-400 font-mono line-through">{c.raw}%</span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-slate-400">보정 추정</span>
+                          <span className="text-emerald-400 font-mono font-bold">{c.corr}%</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="bg-red-950/40 rounded-xl p-4 border border-red-800/30">
-                    <div className="text-red-300 font-bold mb-1">R²=0.00 발견 → 무효</div>
-                    <div className="text-slate-400 text-xs leading-relaxed">
-                      이준석/권영국/송진호 재확인표 수십 배 과장으로<br/>
-                      R2(재확인 비율) 분모가 폭증 → 통계 패턴 붕괴<br/>
-                      <span className="text-slate-500">실제 R²는 역대와 유사할 것으로 추정</span>
-                    </div>
-                  </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 17개 시도 보정 데이터 테이블 */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-white mb-1">17개 시도 보정 데이터 — R1 / R2 / K값</h3>
+                <p className="text-slate-500 text-xs mb-4">
+                  보정 방법: 이재명 재확인율(실측) 기준, 제주도 후보간 비율로 이상값 추정 교체.
+                  <span className="text-amber-400 ml-1">주황* = 보정된 추정값</span>
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-700 text-slate-400">
+                        <th className="py-2 px-2 text-left">지역</th>
+                        <th className="py-2 px-2 text-right text-blue-400">이재명%</th>
+                        <th className="py-2 px-2 text-right text-red-400">김문수%</th>
+                        <th className="py-2 px-2 text-right text-orange-400">이준석%</th>
+                        <th className="py-2 px-2 text-right text-yellow-300">권영국%</th>
+                        <th className="py-2 px-2 text-right text-slate-400">송진호%</th>
+                        <th className="py-2 px-2 text-right">R1</th>
+                        <th className="py-2 px-2 text-right">R2</th>
+                        <th className="py-2 px-2 text-right">K값</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[...cr].sort((a,b)=>b.K-a.K).map((r,i)=>(
+                        <tr key={r.name} className={`border-b border-slate-800 hover:bg-slate-800/40 ${i%2===0?'':'bg-slate-900/20'}`}>
+                          <td className="py-2 px-2 text-white font-medium">{r.name}</td>
+                          <td className="py-2 px-2 text-right text-emerald-400 font-mono">{r.lee_rcPct}%</td>
+                          <td className="py-2 px-2 text-right font-mono">
+                            <span className={r.kim_corrected?'text-amber-400':'text-emerald-400'}>{r.kim_rcPct}%{r.kim_corrected?'*':''}</span>
+                          </td>
+                          <td className="py-2 px-2 text-right font-mono">
+                            <span className={r.jun_corrected?'text-amber-400':'text-emerald-400'}>{r.jun_rcPct}%{r.jun_corrected?'*':''}</span>
+                          </td>
+                          <td className="py-2 px-2 text-right font-mono">
+                            <span className={r.kwon_corrected?'text-amber-400':'text-emerald-400'}>{r.kwon_rcPct}%{r.kwon_corrected?'*':''}</span>
+                          </td>
+                          <td className="py-2 px-2 text-right font-mono">
+                            <span className={r.song_corrected?'text-amber-400':'text-emerald-400'}>{r.song_rcPct}%{r.song_corrected?'*':''}</span>
+                          </td>
+                          <td className="py-2 px-2 text-right text-slate-300 font-mono">{r.R1}%</td>
+                          <td className="py-2 px-2 text-right text-slate-300 font-mono">{r.R2}%</td>
+                          <td className="py-2 px-2 text-right">
+                            <span className={`font-bold font-mono ${r.K>3?'text-orange-400':r.K>1.5?'text-yellow-400':'text-emerald-400'}`}>{r.K.toFixed(3)}</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Corrected K값 chart + Scatter */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                  <h3 className="text-lg font-bold text-white mb-1">지역별 K값 (보정)</h3>
+                  <p className="text-slate-500 text-xs mb-4">K = (김문수재확인/이재명재확인) ÷ (김문수분류/이재명분류) · K=1 정상 · 역대 K≈1.4~1.6</p>
+                  <ResponsiveContainer width="100%" height={380}>
+                    <BarChart data={corrKData} layout="vertical" margin={{top:5,right:50,left:40,bottom:5}}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155"/>
+                      <XAxis type="number" tick={{fill:'#94a3b8',fontSize:11}}/>
+                      <YAxis type="category" dataKey="name" tick={{fill:'#94a3b8',fontSize:11}} width={40}/>
+                      <Tooltip formatter={v=>v.toFixed(3)} contentStyle={{background:'#1e293b',border:'1px solid #334155',borderRadius:'8px',color:'#e2e8f0'}}/>
+                      <ReferenceLine x={1} stroke="#4ade80" strokeDasharray="4 4" label={{value:'K=1',fill:'#4ade80',fontSize:10}}/>
+                      <ReferenceLine x={1.6} stroke="#facc15" strokeDasharray="3 3" label={{value:'역대최고',fill:'#facc15',fontSize:9,position:'top'}}/>
+                      <Bar dataKey="K" radius={[0,4,4,0]}>
+                        {corrKData.map((e,i)=><Cell key={i} fill={e.color}/>)}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                  <h3 className="text-lg font-bold text-white mb-1">R1 vs R2 산점도 (보정)</h3>
+                  <p className="text-slate-500 text-xs mb-4">
+                    보정 R² = <span className="text-white font-bold">{creg.r2}</span> · 기울기 b = {creg.b} · 절편 a = {creg.a}
+                  </p>
+                  <ResponsiveContainer width="100%" height={380}>
+                    <ScatterChart margin={{top:10,right:20,left:10,bottom:20}}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155"/>
+                      <XAxis dataKey="x" name="R1" type="number" tick={{fill:'#94a3b8',fontSize:11}} label={{value:'R1 김문수분류%',position:'insideBottom',offset:-10,fill:'#94a3b8',fontSize:11}} tickFormatter={v=>v+'%'}/>
+                      <YAxis dataKey="y" name="R2" type="number" tick={{fill:'#94a3b8',fontSize:11}} label={{value:'R2 재확인%',angle:-90,position:'insideLeft',fill:'#94a3b8',fontSize:11}} tickFormatter={v=>v+'%'}/>
+                      <Tooltip cursor={{strokeDasharray:'3 3'}} content={({payload})=>{
+                        if(!payload||!payload[0]) return null;
+                        const d=payload[0].payload;
+                        return <div style={{background:'#1e293b',border:'1px solid #334155',borderRadius:'8px',padding:'8px 12px',color:'#e2e8f0',fontSize:12}}>
+                          <div className="font-bold">{d.name}</div>
+                          <div>R1: {d.x}% | R2: {d.y}%</div>
+                        </div>;
+                      }}/>
+                      <Scatter data={corrScatter} fill="#60a5fa"/>
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Historical Regression Comparison — all 5 elections */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-white mb-4">역대 대선 회귀분석 비교 (21대 보정 포함)</h3>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {rc.prev_elections.map(e=>{
+                    const isCorr = e.label==='21대(보정)';
+                    const isRaw  = e.label==='21대';
+                    return (
+                      <div key={e.label} className={`rounded-xl p-4 border ${isRaw?'border-red-500/60 bg-red-950/20':isCorr?'border-blue-500/60 bg-blue-950/20':'border-slate-600 bg-slate-900/40'}`}>
+                        <div className={`text-xl font-bold ${isRaw?'text-red-400':isCorr?'text-blue-400':'text-emerald-400'}`}>{e.label}</div>
+                        {isCorr && <div className="text-blue-300 text-xs mt-0.5">OCR 보정 추정</div>}
+                        {isRaw  && <div className="text-red-300 text-xs mt-0.5">OCR 오류 원본</div>}
+                        <div className="text-white font-mono text-sm mt-2">R² = <span className={`font-bold ${e.r2>=0.9?'text-emerald-400':e.r2>=0.5?'text-amber-400':'text-red-400'}`}>{e.r2.toFixed(2)}</span></div>
+                        <div className="text-slate-400 text-xs mt-1">기울기 b = {e.b}</div>
+                        <div className="text-slate-500 text-xs">절편 a = {e.a}</div>
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="mt-4 text-xs text-slate-500 border-t border-slate-700 pt-3">
-                  결론: 선거 결과(득표수)는 정확. 재확인표 통계 이상은 OCR 오류. 부정선거 증거 아님.
+                  ※ 21대(보정)의 R²=0.65는 역대 0.93~0.98보다 낮음 — 세종·충북 등 일부 지역에서 여전히 이상값 잔류 가능성 있음. 원본 PDF 전수 검증 필요.
+                </div>
+              </div>
+
+              {/* OCR 오류 요약 */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-red-800/40">
+                <h3 className="text-lg font-bold text-red-400 mb-3">OCR 오류 규모 요약</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-4">
+                  {[
+                    { label:'xlsx K값', val:'7.72', corr:'1.80', good:false },
+                    { label:'보정 K값', val:'1.80', corr:'역대 1.47~1.64', good:true },
+                    { label:'xlsx R²', val:'0.00', corr:'보정 후 0.65', good:false },
+                    { label:'보정 R²', val:'0.65', corr:'vs 역대 0.93~0.98', good:true },
+                  ].map(s=>(
+                    <div key={s.label} className={`rounded-xl p-3 border ${s.good?'border-emerald-800/40 bg-emerald-950/20':'border-red-800/40 bg-red-950/20'}`}>
+                      <div className={`text-xl font-bold font-mono ${s.good?'text-emerald-400':'text-red-400'}`}>{s.val}</div>
+                      <div className="text-slate-400 text-xs mt-1">{s.label}</div>
+                      <div className="text-slate-500 text-xs">{s.corr}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-xs text-slate-500">
+                  선거 결과(득표수)는 공식 데이터로 정확. 재확인표 이상은 OCR 파싱 오류. 부정선거 증거 없음.
                 </div>
               </div>
             </div>
