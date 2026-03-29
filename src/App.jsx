@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { BarChart, Bar, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
-import { MapPin, TrendingUp, Users, Activity, Download, BarChart3, ChevronDown, Award, Vote, Building2 } from 'lucide-react';
+import { BarChart, Bar, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, ScatterChart, Scatter, ReferenceLine } from 'recharts';
+import { MapPin, TrendingUp, Users, Activity, Download, BarChart3, ChevronDown, Award, Vote, Building2, AlertTriangle } from 'lucide-react';
 import rawData from './data.json';
 
 // 공식 데이터 (중앙선거관리위원회)
@@ -182,6 +182,7 @@ export default function App() {
     { id: 'seoul', label: '서울 25개구', icon: Building2 },
     { id: 'charts', label: '비교 차트', icon: BarChart3 },
     { id: 'insights', label: '통계 인사이트', icon: TrendingUp },
+    { id: 'recheck', label: '재확인표 검증', icon: AlertTriangle },
   ];
 
   return (
@@ -495,6 +496,174 @@ export default function App() {
           </div>
         )}
       </main>
+
+        {/* Recheck Analysis */}
+        {activeTab === 'recheck' && (() => {
+          const rc = rawData.recheck;
+          const nat = rc.national;
+          const cq = rc.candidate_quality;
+          const pdfEv = rc.pdf_evidence;
+
+          const statusColor = { ok:'text-emerald-400', partial:'text-amber-400', bad:'text-orange-400', critical:'text-red-400' };
+          const statusBg = { ok:'bg-emerald-900/30 border-emerald-600/40', partial:'bg-amber-900/30 border-amber-600/40', bad:'bg-orange-900/30 border-orange-600/40', critical:'bg-red-900/30 border-red-600/40' };
+          const statusIcon = { ok:'✓', partial:'⚠', bad:'✗', critical:'✗' };
+
+          const allRates = rc.regions.map(r => {
+            const leeRPct = parseFloat((r.lee_recheck/(r.lee_class+r.lee_recheck)*100).toFixed(1));
+            const kimRPct = parseFloat((r.kim_recheck/(r.kim_class+r.kim_recheck)*100).toFixed(1));
+            const junRPct = r.jun_total ? parseFloat((r.jun_recheck/r.jun_total*100).toFixed(1)) : null;
+            const kwonRPct = r.kwon_total ? parseFloat((r.kwon_recheck/r.kwon_total*100).toFixed(1)) : null;
+            const songRPct = r.song_total ? parseFloat((r.song_recheck/r.song_total*100).toFixed(1)) : null;
+            const kimOk = kimRPct <= 10;
+            const junOk = junRPct !== null && junRPct <= 15;
+            const kwonOk = kwonRPct !== null && kwonRPct <= 15;
+            const songOk = songRPct !== null && songRPct <= 15;
+            return { name: r.name, leeRPct, kimRPct, junRPct, kwonRPct, songRPct, kimOk, junOk, kwonOk, songOk };
+          });
+
+          return (
+            <div className="space-y-6">
+              {/* Error Banner */}
+              <div className="bg-red-950/50 border border-red-600/60 rounded-2xl p-5 flex items-start gap-3">
+                <AlertTriangle size={22} className="text-red-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <div className="text-red-300 font-bold text-lg mb-1">OCR 데이터 오류 발견 — PDF 직접 검증 결과</div>
+                  <div className="text-red-200/70 text-sm leading-relaxed">
+                    AI OCR로 생성된 재확인표 데이터에서 <strong>심각한 오류</strong>가 발견됐습니다.
+                    6개 지역 투표함을 원본 PDF에서 직접 판독한 결과, 이재명을 제외한 후보들의 재확인표 수치가 대부분 크게 부풀려졌습니다.
+                    <strong> 선거 결과(최종 득표수)는 공식 데이터로 정확</strong>하며, 이 오류는 OCR 파싱 과정의 문제입니다.
+                  </div>
+                </div>
+              </div>
+
+              {/* Candidate Quality Cards */}
+              <div>
+                <h3 className="text-lg font-bold text-white mb-3">후보별 재확인표 데이터 신뢰도</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                  {[
+                    { key:'lee', name:'이재명', color:'#0066CC' },
+                    { key:'kim', name:'김문수', color:'#E61E2B' },
+                    { key:'jun', name:'이준석', color:'#FF9800' },
+                    { key:'kwon', name:'권영국', color:'#FFEB3B' },
+                    { key:'song', name:'송진호', color:'#9E9E9E' },
+                  ].map(({key,name,color}) => {
+                    const q = cq[key];
+                    return (
+                      <div key={key} className={`rounded-xl p-4 border ${statusBg[q.status]}`}>
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-3 h-3 rounded-full" style={{backgroundColor:color}}/>
+                          <span className="text-white font-bold">{name}</span>
+                        </div>
+                        <div className={`text-xl font-bold font-mono ${statusColor[q.status]}`}>{statusIcon[q.status]} {q.label}</div>
+                        <div className="text-slate-400 text-xs mt-2">xlsx 재확인율: <span className="text-white font-mono">{q.xlsx_rate}%</span></div>
+                        <div className="text-slate-400 text-xs">실제 예상: <span className="text-emerald-400 font-mono">{q.expected}</span></div>
+                        {q.bad_count > 0 && <div className="text-slate-500 text-xs mt-1">오류 지역: {q.bad_count}개 시도</div>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* PDF Direct Evidence */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-white mb-1">PDF 직접 판독 증거</h3>
+                <p className="text-slate-500 text-xs mb-4">원본 개표상황표 PDF를 직접 렌더링하여 투표함별 재확인표 수를 판독. 모든 후보의 실제 재확인율은 0~10% 범위.</p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-700 text-slate-400">
+                        <th className="py-2 px-3 text-left">지역</th>
+                        <th className="py-2 px-3 text-left">투표함</th>
+                        <th className="py-2 px-3 text-right text-blue-400">이재명</th>
+                        <th className="py-2 px-3 text-right text-red-400">김문수</th>
+                        <th className="py-2 px-3 text-right text-orange-400">이준석</th>
+                        <th className="py-2 px-3 text-right text-yellow-400">권영국</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pdfEv.map((e,i) => (
+                        <tr key={i} className={`border-b border-slate-800 hover:bg-slate-800/40 ${i%2===0?'':'bg-slate-900/20'}`}>
+                          <td className="py-2 px-3 text-white font-medium">{e.region}</td>
+                          <td className="py-2 px-3 text-slate-400 text-xs">{e.location}</td>
+                          <td className="py-2 px-3 text-right text-emerald-400 font-mono">{e.lee}%</td>
+                          <td className="py-2 px-3 text-right text-emerald-400 font-mono">{e.kim}%</td>
+                          <td className="py-2 px-3 text-right text-emerald-400 font-mono">{e.jun}%</td>
+                          <td className="py-2 px-3 text-right text-emerald-400 font-mono">{e.kwon}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="mt-3 text-xs text-slate-500">비교: xlsx 주장 — 경기 김문수 47.4%, 대구 권영국 99.2%, 전북 송진호 99.7% (물리적으로 불가능)</div>
+              </div>
+
+              {/* Regional Data Quality Table */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-slate-700">
+                <h3 className="text-lg font-bold text-white mb-1">지역별 재확인율 — 오류 진단</h3>
+                <p className="text-slate-500 text-xs mb-4">빨간 배경: 15% 초과(이상값) | 녹색: 정상(0~10%) | 이재명은 전 지역 정상</p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-700 text-slate-400">
+                        <th className="py-2 px-2 text-left">지역</th>
+                        <th className="py-2 px-2 text-right text-blue-400">이재명</th>
+                        <th className="py-2 px-2 text-right text-red-400">김문수</th>
+                        <th className="py-2 px-2 text-right text-orange-400">이준석</th>
+                        <th className="py-2 px-2 text-right text-yellow-300">권영국</th>
+                        <th className="py-2 px-2 text-right text-slate-400">송진호</th>
+                        <th className="py-2 px-2 text-right">판정</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allRates.map((r,i) => {
+                        const allOk = r.kimOk && r.junOk && r.kwonOk && r.songOk;
+                        return (
+                          <tr key={r.name} className={`border-b border-slate-800 hover:bg-slate-800/40 ${i%2===0?'':'bg-slate-900/20'}`}>
+                            <td className="py-2 px-2 text-white font-medium">{r.name}</td>
+                            <td className="py-2 px-2 text-right text-emerald-400 font-mono">{r.leeRPct}%</td>
+                            <td className={`py-2 px-2 text-right font-mono font-bold ${r.kimOk?'text-emerald-400':'text-red-400'}`}>{r.kimRPct}%</td>
+                            <td className={`py-2 px-2 text-right font-mono font-bold ${r.junOk?'text-emerald-400':'text-red-400'}`}>{r.junRPct !== null ? r.junRPct+'%' : '-'}</td>
+                            <td className={`py-2 px-2 text-right font-mono font-bold ${r.kwonOk?'text-emerald-400':'text-red-400'}`}>{r.kwonRPct !== null ? r.kwonRPct+'%' : '-'}</td>
+                            <td className={`py-2 px-2 text-right font-mono font-bold ${r.songOk?'text-emerald-400':'text-red-400'}`}>{r.songRPct !== null ? r.songRPct+'%' : '-'}</td>
+                            <td className="py-2 px-2 text-right">
+                              <span className={`font-bold ${allOk?'text-emerald-400':'text-red-400'}`}>{allOk?'✓':'✗'}</span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Invalid Analysis Note */}
+              <div className="bg-slate-800/40 backdrop-blur rounded-2xl p-6 border border-red-800/40">
+                <h3 className="text-lg font-bold text-red-400 mb-3">⚠ 이전 통계 분석 무효 선언</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="bg-red-950/40 rounded-xl p-4 border border-red-800/30">
+                    <div className="text-red-300 font-bold mb-1">K값 분석 → 무효</div>
+                    <div className="text-slate-400 text-xs leading-relaxed">
+                      xlsx 전국 K값 = 7.72 (오염 데이터 기반)<br/>
+                      실제 추정 K ≈ 1.37 (역대 18~20대: 1.47~1.64)<br/>
+                      <span className="text-slate-500">오류 원인: 김문수 재확인표 ~6배 과장</span>
+                    </div>
+                  </div>
+                  <div className="bg-red-950/40 rounded-xl p-4 border border-red-800/30">
+                    <div className="text-red-300 font-bold mb-1">R²=0.00 발견 → 무효</div>
+                    <div className="text-slate-400 text-xs leading-relaxed">
+                      이준석/권영국/송진호 재확인표 수십 배 과장으로<br/>
+                      R2(재확인 비율) 분모가 폭증 → 통계 패턴 붕괴<br/>
+                      <span className="text-slate-500">실제 R²는 역대와 유사할 것으로 추정</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 text-xs text-slate-500 border-t border-slate-700 pt-3">
+                  결론: 선거 결과(득표수)는 정확. 재확인표 통계 이상은 OCR 오류. 부정선거 증거 아님.
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
       <footer className="border-t border-slate-800 mt-12 py-6 text-center text-slate-600 text-xs">
         <p>데이터 출처: 중앙선거관리위원회 선거통계시스템 | 제21대 대통령선거 2025.06.03 | 원본 169,749건 집계</p>

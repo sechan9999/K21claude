@@ -437,5 +437,476 @@
       "margin": -90455,
       "total": 371406
     }
-  ]
+  ],
+  "recheck": {
+    "national": {
+      "lee": {
+        "class": 16876697,
+        "recheck": 410816,
+        "total": 17287513
+      },
+      "kim": {
+        "class": 12118200,
+        "recheck": 2277439,
+        "total": 14395639
+      },
+      "jun": {
+        "class": 2157295,
+        "recheck": 760228,
+        "total": 2917523
+      },
+      "kwon": {
+        "class": 127035,
+        "recheck": 217115,
+        "total": 344150
+      },
+      "song": {
+        "class": 7734,
+        "recheck": 28057,
+        "total": 35791
+      }
+    },
+    "regions": [
+      {
+        "name": "강원",
+        "lee_class": 441735,
+        "lee_recheck": 7426,
+        "kim_class": 454222,
+        "kim_recheck": 29138,
+        "jun_class": 62629,
+        "jun_recheck": 16075,
+        "R1": 47.24,
+        "R2": 48.33,
+        "K": 3.816,
+        "kwon_class": 2674,
+        "kwon_recheck": 6748,
+        "song_class": 234,
+        "song_recheck": 903
+      },
+      {
+        "name": "경기",
+        "lee_class": 4725085,
+        "lee_recheck": 96063,
+        "kim_class": 1844492,
+        "kim_recheck": 1660128,
+        "jun_class": 643895,
+        "jun_recheck": 172540,
+        "R1": 25.54,
+        "R2": 82.46,
+        "K": 44.271,
+        "kwon_class": 6461,
+        "kwon_recheck": 77613,
+        "song_class": 1496,
+        "song_recheck": 6860
+      },
+      {
+        "name": "경남",
+        "lee_class": 835772,
+        "lee_recheck": 15961,
+        "kim_class": 1064431,
+        "kim_recheck": 59412,
+        "jun_class": 130611,
+        "jun_recheck": 30968,
+        "R1": 52.2,
+        "R2": 48.51,
+        "K": 2.923,
+        "kwon_class": 7773,
+        "kwon_recheck": 14036,
+        "song_class": 582,
+        "song_recheck": 2096
+      },
+      {
+        "name": "경북",
+        "lee_class": 435903,
+        "lee_recheck": 6780,
+        "kim_class": 1098034,
+        "kim_recheck": 61560,
+        "jun_class": 12532,
+        "jun_recheck": 103562,
+        "R1": 70.74,
+        "R2": 33.85,
+        "K": 3.604,
+        "kwon_class": 5287,
+        "kwon_recheck": 8597,
+        "song_class": 407,
+        "song_recheck": 1381
+      },
+      {
+        "name": "광주",
+        "lee_class": 813174,
+        "lee_recheck": 31508,
+        "kim_class": 70150,
+        "kim_recheck": 9787,
+        "jun_class": 3861,
+        "jun_recheck": 58243,
+        "R1": 7.87,
+        "R2": 9.33,
+        "K": 3.601,
+        "kwon_class": 4113,
+        "kwon_recheck": 4654,
+        "song_class": 183,
+        "song_recheck": 751
+      },
+      {
+        "name": "대구",
+        "lee_class": 375033,
+        "lee_recheck": 4097,
+        "kim_class": 1068839,
+        "kim_recheck": 35074,
+        "jun_class": 108597,
+        "jun_recheck": 26779,
+        "R1": 68.83,
+        "R2": 44.14,
+        "K": 3.004,
+        "kwon_class": 103,
+        "kwon_recheck": 12428,
+        "song_class": 285,
+        "song_recheck": 1077
+      },
+      {
+        "name": "대전",
+        "lee_class": 456162,
+        "lee_recheck": 14159,
+        "kim_class": 363709,
+        "kim_recheck": 29840,
+        "jun_class": 85568,
+        "jun_recheck": 9156,
+        "R1": 39.93,
+        "R2": 50.7,
+        "K": 2.643,
+        "kwon_class": 5083,
+        "kwon_recheck": 4822,
+        "song_class": 233,
+        "song_recheck": 876
+      },
+      {
+        "name": "부산",
+        "lee_class": 879834,
+        "lee_recheck": 15379,
+        "kim_class": 1115168,
+        "kim_recheck": 31070,
+        "jun_class": 147408,
+        "jun_recheck": 21065,
+        "R1": 51.85,
+        "R2": 39.04,
+        "K": 1.594,
+        "kwon_class": 7902,
+        "kwon_recheck": 10287,
+        "song_class": 315,
+        "song_recheck": 1784
+      },
+      {
+        "name": "서울",
+        "lee_class": 3042663,
+        "lee_recheck": 62796,
+        "kim_class": 2571555,
+        "kim_recheck": 166850,
+        "jun_class": 578481,
+        "jun_recheck": 76865,
+        "R1": 41.21,
+        "R2": 47.81,
+        "K": 3.144,
+        "kwon_class": 46505,
+        "kwon_recheck": 37395,
+        "song_class": 935,
+        "song_recheck": 5063
+      },
+      {
+        "name": "세종",
+        "lee_class": 139489,
+        "lee_recheck": 1131,
+        "kim_class": 79409,
+        "kim_recheck": 4556,
+        "jun_class": 20630,
+        "jun_recheck": 4374,
+        "R1": 32.96,
+        "R2": 38.36,
+        "K": 7.076,
+        "kwon_class": 1346,
+        "kwon_recheck": 1615,
+        "song_class": 33,
+        "song_recheck": 202
+      },
+      {
+        "name": "울산",
+        "lee_class": 307867,
+        "lee_recheck": 7953,
+        "kim_class": 342933,
+        "kim_recheck": 10247,
+        "jun_class": 56641,
+        "jun_recheck": 6536,
+        "R1": 48.15,
+        "R2": 34,
+        "K": 1.157,
+        "kwon_class": 4668,
+        "kwon_recheck": 4631,
+        "song_class": 127,
+        "song_recheck": 772
+      },
+      {
+        "name": "인천",
+        "lee_class": 985065,
+        "lee_recheck": 59230,
+        "kim_class": 738400,
+        "kim_recheck": 38552,
+        "jun_class": 155703,
+        "jun_recheck": 21036,
+        "R1": 39.06,
+        "R2": 29.51,
+        "K": 0.868,
+        "kwon_class": 10874,
+        "kwon_recheck": 9869,
+        "song_class": 160,
+        "song_recheck": 1938
+      },
+      {
+        "name": "전남",
+        "lee_class": 1091722,
+        "lee_recheck": 20219,
+        "kim_class": 67131,
+        "kim_recheck": 43493,
+        "jun_class": 47538,
+        "jun_recheck": 13284,
+        "R1": 5.54,
+        "R2": 52.54,
+        "K": 34.982,
+        "kwon_class": 4018,
+        "kwon_recheck": 5334,
+        "song_class": 1646,
+        "song_recheck": 458
+      },
+      {
+        "name": "전북",
+        "lee_class": 975783,
+        "lee_recheck": 47489,
+        "kim_class": 94610,
+        "kim_recheck": 40386,
+        "jun_class": 43481,
+        "jun_recheck": 24480,
+        "R1": 8.46,
+        "R2": 33.76,
+        "K": 8.771,
+        "kwon_class": 4512,
+        "kwon_recheck": 5549,
+        "song_class": 6,
+        "song_recheck": 1713
+      },
+      {
+        "name": "제주",
+        "lee_class": 222295,
+        "lee_recheck": 6434,
+        "kim_class": 141169,
+        "kim_recheck": 4121,
+        "jun_class": 35704,
+        "jun_recheck": 1205,
+        "R1": 34.81,
+        "R2": 34.18,
+        "K": 1.009,
+        "kwon_class": 5945,
+        "kwon_recheck": 246,
+        "song_class": 479,
+        "song_recheck": 49
+      },
+      {
+        "name": "충남",
+        "lee_class": 650269,
+        "lee_recheck": 11047,
+        "kim_class": 569342,
+        "kim_recheck": 30766,
+        "jun_class": 17017,
+        "jun_recheck": 94075,
+        "R1": 45.84,
+        "R2": 21.23,
+        "K": 3.181,
+        "kwon_class": 5014,
+        "kwon_recheck": 7879,
+        "song_class": 360,
+        "song_recheck": 1159
+      },
+      {
+        "name": "충북",
+        "lee_class": 498846,
+        "lee_recheck": 3144,
+        "kim_class": 434606,
+        "kim_recheck": 22459,
+        "jun_class": 6999,
+        "jun_recheck": 79985,
+        "R1": 45.97,
+        "R2": 20.06,
+        "K": 8.199,
+        "kwon_class": 4757,
+        "kwon_recheck": 5412,
+        "song_class": 253,
+        "song_recheck": 975
+      }
+    ],
+    "prev_elections": [
+      {
+        "label": "18대",
+        "a": 0.012,
+        "b": 1.52,
+        "r2": 0.96
+      },
+      {
+        "label": "19대",
+        "a": 0.012,
+        "b": 1.64,
+        "r2": 0.98
+      },
+      {
+        "label": "20대",
+        "a": -0.139,
+        "b": 1.47,
+        "r2": 0.93
+      },
+      {
+        "label": "21대",
+        "a": 0.393,
+        "b": -0.001,
+        "r2": 0
+      }
+    ],
+    "pdf_evidence": [
+      {
+        "region": "경기",
+        "location": "과천시 (3개 투표함 샘플)",
+        "lee": 2.1,
+        "kim": 1.8,
+        "jun": 1.5,
+        "kwon": 1.2
+      },
+      {
+        "region": "경기",
+        "location": "고양시덕양구 18통제1투",
+        "lee": 1.2,
+        "kim": 1,
+        "jun": 0.8,
+        "kwon": 0
+      },
+      {
+        "region": "전남",
+        "location": "목포시 용당1동제1투",
+        "lee": 5.1,
+        "kim": 3.9,
+        "jun": 4.3,
+        "kwon": 10
+      },
+      {
+        "region": "전남",
+        "location": "광양시 광양을제1투",
+        "lee": 2.3,
+        "kim": 0.6,
+        "jun": 2.2,
+        "kwon": 0
+      },
+      {
+        "region": "대구",
+        "location": "동구 신암1동제1투",
+        "lee": 2.1,
+        "kim": 3.6,
+        "jun": 0.7,
+        "kwon": 0
+      },
+      {
+        "region": "전북",
+        "location": "전주시완산구 (2개 투표함 샘플)",
+        "lee": 1.5,
+        "kim": 1,
+        "jun": 1,
+        "kwon": 0
+      }
+    ],
+    "candidate_quality": {
+      "lee": {
+        "status": "ok",
+        "label": "신뢰 가능",
+        "xlsx_rate": 2.4,
+        "expected": "2~5%",
+        "bad_count": 0,
+        "bad_regions": []
+      },
+      "kim": {
+        "status": "partial",
+        "label": "부분 오류",
+        "xlsx_rate": 15.8,
+        "expected": "2~5%",
+        "bad_count": 3,
+        "bad_regions": [
+          "경기",
+          "전남",
+          "전북"
+        ]
+      },
+      "jun": {
+        "status": "bad",
+        "label": "심각한 오류",
+        "xlsx_rate": 26.1,
+        "expected": "3~7%",
+        "bad_count": 11,
+        "bad_regions": [
+          "강원",
+          "경기",
+          "경남",
+          "경북",
+          "광주",
+          "대구",
+          "세종",
+          "전남",
+          "전북",
+          "충남",
+          "충북"
+        ]
+      },
+      "kwon": {
+        "status": "critical",
+        "label": "치명적 오류",
+        "xlsx_rate": 63.1,
+        "expected": "3~6%",
+        "bad_count": 16,
+        "bad_regions": [
+          "강원",
+          "경기",
+          "경남",
+          "경북",
+          "광주",
+          "대구",
+          "대전",
+          "부산",
+          "서울",
+          "세종",
+          "울산",
+          "인천",
+          "전남",
+          "전북",
+          "충남",
+          "충북"
+        ]
+      },
+      "song": {
+        "status": "critical",
+        "label": "치명적 오류",
+        "xlsx_rate": 78.4,
+        "expected": "4~10%",
+        "bad_count": 16,
+        "bad_regions": [
+          "강원",
+          "경기",
+          "경남",
+          "경북",
+          "광주",
+          "대구",
+          "대전",
+          "부산",
+          "서울",
+          "세종",
+          "울산",
+          "인천",
+          "전남",
+          "전북",
+          "충남",
+          "충북"
+        ]
+      }
+    }
+  }
 }
