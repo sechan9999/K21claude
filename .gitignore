@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vercel
+
+# PDF 검증 렌더링 이미지 (임시 작업 파일)
+*.png
+*.pdf
+sejong_test.pdf
+
+# 임시/잠금 파일
+~$*
+velogp.jpg
+
+# 원본 데이터 (대용량)
+election_raw.csv
+K21_선거결과.csv
+K21_선거결과.json
+K21_선거결과_공식.csv
+
+# 기타
+package-lock.json
